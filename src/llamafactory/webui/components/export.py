@@ -115,6 +115,11 @@ def save_model(
     yield ALERTS["info_exported"][lang]
 
 
+from datetime import datetime
+def generate_export_dir():
+    time_str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    return f"/workspace/user-data/models/exported/export_dirs_{time_str}"
+
 def create_export_tab(engine: "Engine") -> dict[str, "Component"]:
     with gr.Row():
         export_size = gr.Slider(minimum=1, maximum=100, value=5, step=1)
@@ -125,7 +130,7 @@ def create_export_tab(engine: "Engine") -> dict[str, "Component"]:
 
     with gr.Row():
         export_dir = gr.Textbox()
-        export_hub_model_id = gr.Textbox()
+        export_hub_model_id = gr.Textbox(value=generate_export_dir())
         extra_args = gr.Textbox(value="{}")
 
     checkpoint_path: gr.Dropdown = engine.manager.get_elem_by_id("top.checkpoint_path")
