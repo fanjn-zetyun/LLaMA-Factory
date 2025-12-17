@@ -467,6 +467,39 @@ class BasePlugin(MMPluginMixin):
 
 
 @dataclass
+class ErnieVLPlugin(BasePlugin):
+    @override
+    def process_messages(
+        self,
+        messages: list[dict[str, str]],
+        images: list["ImageInput"],
+        videos: list["VideoInput"],
+        audios: list["AudioInput"],
+        processor: Optional["MMProcessor"],
+    ) -> list[dict[str, str]]:
+        self._validate_input(processor, images, videos, audios)
+        self._validate_messages(messages, images, videos, audios)
+        messages = deepcopy(messages)
+        image_idx, video_idx = 0, 0
+        for message in messages:
+            content = message["content"]
+            image_token = self.image_token or "<|image@placeholder|>"
+            video_token = self.video_token or "<|video@placeholder|>"
+            while IMAGE_PLACEHOLDER in content:
+                image_idx += 1
+                content = content.replace(
+                    IMAGE_PLACEHOLDER, f"Picture {image_idx}:<|IMAGE_START|>{image_token}<|IMAGE_END|>", 1
+                )
+            while VIDEO_PLACEHOLDER in content:
+                video_idx += 1
+                content = content.replace(
+                    VIDEO_PLACEHOLDER, f"Video {video_idx}:<|VIDEO_START|>{video_token}<|VIDEO_END|>", 1
+                )
+            message["content"] = content
+        return messages
+
+
+@dataclass
 class Gemma3Plugin(BasePlugin):
     @override
     def process_messages(
@@ -1885,8 +1918,14 @@ class Qwen2OmniPlugin(Qwen2VLPlugin):
             image_grid_thw = mm_inputs.get("image_grid_thw", [])
             video_grid_thw = mm_inputs.get("video_grid_thw", [])
             if "feature_attention_mask" in mm_inputs:
-                input_lengths = (mm_inputs["feature_attention_mask"].sum(-1).numpy() - 1) // 2 + 1
-                audio_lengths = (input_lengths - 2) // 2 + 1
+                if processor.__class__.__name__ == "Qwen3OmniMoeProcessor":  # for qwen3omni
+                    input_lengths = mm_inputs["feature_attention_mask"].sum(-1)
+                    input_lengths_leave = input_lengths % 100
+                    feature_lengths = (input_lengths_leave - 1) // 2 + 1
+                    audio_lengths = ((feature_lengths - 1) // 2 + 1 - 1) // 2 + 1 + (input_lengths // 100) * 13
+                else:
+                    input_lengths = (mm_inputs["feature_attention_mask"].sum(-1).numpy() - 1) // 2 + 1
+                    audio_lengths = (input_lengths - 2) // 2 + 1
         else:
             mm_inputs = {}
             image_grid_thw = [None] * len(images)
@@ -2033,6 +2072,7 @@ class VideoLlavaPlugin(BasePlugin):
 
 PLUGINS = {
     "base": BasePlugin,
+    "ernie_vl": ErnieVLPlugin,
     "gemma3": Gemma3Plugin,
     "glm4v": GLM4VPlugin,
     "gemma3n": Gemma3nPlugin,
