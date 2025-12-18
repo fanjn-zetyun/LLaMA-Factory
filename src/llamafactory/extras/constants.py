@@ -2683,7 +2683,7 @@ register_model_group(
             DownloadSource.MODELSCOPE: "Qwen/Qwen2-7B-Instruct-GPTQ-Int4",
         },
         "Qwen2-7B-Instruct-AWQ": {
-            DownloadSource.DEFAULT: "Qwen/Qwen2-7B-Instruct-AWQ",
+            DownloadSource.DEFAULT: "/shared-only/models/Qwen/Qwen2-7B-Instruct-AWQ",
             DownloadSource.MODELSCOPE: "Qwen/Qwen2-7B-Instruct-AWQ",
         },
         "Qwen2-72B-Instruct-GPTQ-Int8": {
@@ -2854,7 +2854,7 @@ register_model_group(
             DownloadSource.MODELSCOPE: "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4",
         },
         "Qwen2.5-14B-Instruct-AWQ": {
-            DownloadSource.DEFAULT: "Qwen/Qwen2.5-14B-Instruct-AWQ",
+            DownloadSource.DEFAULT: "/shared-only/models/Qwen/Qwen2.5-14B-Instruct-AWQ",
             DownloadSource.MODELSCOPE: "Qwen/Qwen2.5-14B-Instruct-AWQ",
         },
         "Qwen2.5-32B-Instruct-GPTQ-Int8": {
