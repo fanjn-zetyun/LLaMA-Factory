@@ -2281,7 +2281,7 @@ register_model_group(
 register_model_group(
     models={
         "Phi-4-3.8B-instruct": {
-            DownloadSource.DEFAULT: "microsoft/Phi-4-mini-instruct",
+            DownloadSource.DEFAULT: "/shared-only/models/microsoft/Phi-4-mini-instruct",
             DownloadSource.MODELSCOPE: "LLM-Research/Phi-4-mini-instruct",
         },
     },
