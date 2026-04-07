@@ -881,10 +881,10 @@ register_model_group(
 register_model_group(
     models={
         "Gemma-4-26B-A4B-Thinking": {
-            DownloadSource.DEFAULT: "google/gemma-4-26B-A4B-it",
+            DownloadSource.DEFAULT: "/shared-only/models/google/gemma-4-26B-A4B-it",
         },
         "Gemma-4-31B-Thinking": {
-            DownloadSource.DEFAULT: "google/gemma-4-31B-it",
+            DownloadSource.DEFAULT: "/shared-only/models/google/gemma-4-31B-it",
         },
     },
     template="gemma4",
@@ -895,10 +895,10 @@ register_model_group(
 register_model_group(
     models={
         "Gemma-4-E2B-Thinking": {
-            DownloadSource.DEFAULT: "google/gemma-4-E2B-it",
+            DownloadSource.DEFAULT: "/shared-only/models/google/gemma-4-E2B-it",
         },
         "Gemma-4-E4B-Thinking": {
-            DownloadSource.DEFAULT: "google/gemma-4-E4B-it",
+            DownloadSource.DEFAULT: "/shared-only/models/google/gemma-4-E4B-it",
         },
     },
     template="gemma4n",
